@@ -43,28 +43,7 @@
                     formTemplate: $('#formset-template').clone(),
                     // initialize newly created heavy fields on the added callback
                     added: function (row) {
-                        row.find('.django-select2.django-select2-heavy').each(function () {
-                            var field_id = $(this).data('field_id');
-                            $(this).select2({
-                                ajax: {
-                                    data: function (params) {
-                                        return {
-                                            term: params.term,
-                                            page: params.page,
-                                            field_id: field_id
-                                        }
-                                    },
-                                    processResults: function (data, page) {
-                                        return {
-                                            results: data.results,
-                                            pagination: {
-                                                more: data.more
-                                            }
-                                      }
-                                    }
-                                }
-                            });
-                        });
+                        row.find('.django-select2').djangoSelect2();
                     }
                 });
             }());
