@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block css %}
+    {{ form.0.media.css }}
+{% endblock css %}
+
+{% block content %}
+    <div>
+        <a href="{% url 'book-list-single' %}">example 1</a> |
+        <span>example 2</span>
+    </div>
+
+    <form method="post" action="." >
+        {% csrf_token %}
+        <div style="display: flex; flex-direction: row;">
+            {% for formset in form %}
+                <div style="flex: auto;">
+                    <h1>My {% if forloop.counter == 2 %}least {% endif %}favorite books</h1>
+
+                    <div id="formset-template-{{ forloop.counter }}" style="display: none;">
+                        {{ formset.empty_form }}
+                    </div>
+
+                    {{ formset.management_form }}
+
+                    <div id="formset-{{ forloop.counter }}">
+                        {% for f in formset %}
+                            {{ f }}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit">submit</button>
+    </form>
+
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="{% static 'jquery.formset.js' %}"></script>
+    {{ form.0.media.js }}
+    <script>
+        (function () {
+            {% for formset in form %}
+                // init dynamic formset
+                $('#formset-{{ forloop.counter }}').formset({
+                    formTemplate: $('#formset-template-{{ forloop.counter }}').clone(),
+                    // initialize newly created heavy fields on the added callback
+                    added: function (row) {
+                        row.find('.django-select2').djangoSelect2();
+                    }
+                });
+            {% endfor %}
+        }());
+    </script>
+{% endblock content %}

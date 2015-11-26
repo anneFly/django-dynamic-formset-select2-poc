@@ -1,0 +1,20 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html>
+    <head>
+        <title>POC</title>
+        <meta charset="urf-8">
+
+        {% block css %}{% endblock css %}
+        <style type="text/css">
+            select {
+                width: 200px;
+            }
+        </style>
+    </head>
+
+    <body>
+        {% block content %}{% endblock content %}
+    </body>
+</html>

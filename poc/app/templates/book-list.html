@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block css %}{{ form.media.css }}{% endblock css %}
+
+{% block content %}
+    <div>
+        <span>example 1</span> |
+        <a href="{% url 'book-list-multiple' %}">example 2</a>
+    </div>
+
+    <h1>My favorite books</h1>
+
+    <div id="formset-template" style="display: none;">
+        {{ form.empty_form }}
+    </div>
+
+    <form method="post" action=".">
+        {% csrf_token %}
+        {{ form.management_form }}
+
+        <div id="formset">
+            {% for f in form %}
+                {{ f }}
+            {% endfor %}
+        </div>
+        <button type="submit">submit</button>
+    </form>
+
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="{% static 'jquery.formset.js' %}"></script>
+    {{ form.media.js }}
+    <script>
+        (function () {
+            // init dynamic formset
+            $('#formset').formset({
+                formTemplate: $('#formset-template').clone(),
+                // initialize newly created heavy fields on the added callback
+                added: function (row) {
+                    row.find('.django-select2').djangoSelect2();
+                }
+            });
+        }());
+    </script>
+{% endblock content %}
