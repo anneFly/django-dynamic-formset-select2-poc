@@ -1,2 +1,2 @@
 Django==1.8.6
-Django-Select2==5.3.0
+Django-Select2==5.4.0
